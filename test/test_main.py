@@ -6,18 +6,24 @@ from src.main import (
 
 
 def test_product_str():
-    product = Product("TestProduct", "Desc", 100.0, 3)
-    assert str(product) == "TestProduct, 100.0 руб. Остаток: 3 шт."
+    product = Product("Test", "Description", 100, 5)
+    assert str(product) == "Test, 100 руб. Остаток: 5 шт."
 
 
 def test_category_str():
-    p1 = Product("P1", "desc", 10.0, 5)
-    p2 = Product("P2", "desc", 20.0, 10)
-    category = Category("TestCategory", "desc", [p1, p2])
-    assert str(category) == "TestCategory, количество продуктов: 15 шт."
+    products = [Product("Test1", "Desc1", 100, 2), Product("Test2", "Desc2", 200, 3)]
+    category = Category("TestCat", "TestDesc", products)
+    assert "Категория: TestCat" in str(category)
+    assert "Количество продуктов: 5 шт." in str(category)
 
 
-def test_product_add():
-    p1 = Product("P1", "desc", 10.0, 5)
-    p2 = Product("P2", "desc", 20.0, 10)
-    assert p1 + p2 == (10.0 * 5 + 20.0 * 10)
+def test_product_addition():
+    p1 = Product("P1", "Desc", 10, 2)
+    p2 = Product("P2", "Desc", 20, 3)
+    assert p1 + p2 == 80
+
+
+def test_product_addition_invalid_type():
+    p1 = Product("P1", "Desc", 10, 2)
+    with pytest.raises(TypeError):
+        p1 + 100
