@@ -13,6 +13,15 @@ class Product:
             raise TypeError("Можно складывать только объекты класса Product")
         return self.price * self.quantity + other.price * other.quantity
 
+    def __eq__(self, other):
+        if not isinstance(other, Product):
+            return NotImplemented
+        return (
+            self.name == other.name
+            and self.price == other.price
+            and self.quantity == other.quantity
+        )
+
 
 class Category:
     def __init__(self, name, description, products):
