@@ -9,9 +9,18 @@ class Product:
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other):
-        if isinstance(other, Product):
-            return self.price * self.quantity + other.price * other.quantity
-        return NotImplemented
+        if not isinstance(other, Product):
+            raise TypeError("Можно складывать только объекты класса Product")
+        return self.price * self.quantity + other.price * other.quantity
+
+    def __eq__(self, other):
+        if not isinstance(other, Product):
+            return NotImplemented
+        return (
+            self.name == other.name
+            and self.price == other.price
+            and self.quantity == other.quantity
+        )
 
 
 class Category:
@@ -22,7 +31,13 @@ class Category:
 
     def __str__(self):
         total_quantity = sum(product.quantity for product in self.products)
-        return f"{self.name}, количество продуктов: {total_quantity} шт."
+        product_list = "\n".join(str(product) for product in self.products)
+        return (
+            f"Категория: {self.name}\n"
+            f"Описание: {self.description}\n"
+            f"Количество продуктов: {total_quantity} шт.\n"
+            f"Список продуктов:\n{product_list}"
+        )
 
 
 if __name__ == "__main__":
@@ -40,8 +55,9 @@ if __name__ == "__main__":
         "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни",
         [product1, product2, product3],
     )
-    print(str(category1))
-    print(category1.products)
-    print(product1 + product2)
-    print(product1 + product3)
-    print(product2 + product3)
+    print("\n" + str(category1))
+
+    print("\nСуммарная стоимость товаров:")
+    print(f"{product1.name} + {product2.name} = {product1 + product2} руб.")
+    print(f"{product1.name} + {product3.name} = {product1 + product3} руб.")
+    print(f"{product2.name} + {product3.name} = {product2 + product3} руб.")
